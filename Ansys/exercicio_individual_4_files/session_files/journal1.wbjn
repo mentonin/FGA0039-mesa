@@ -1,0 +1,270 @@
+# encoding: utf-8
+# 2021 R2
+SetScriptVersion(Version="21.2.209")
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+parameter1 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="R")
+parameter2 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="h")
+parameter3 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="t")
+parameter4 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="r")
+parameter5 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="P")
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="160[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="280[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5.5[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="10[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="6[mpa")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="6[mpa]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="6[MPa]")
+parameter5.Delete()
+parameter6 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="P")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="6[MPa]")
+parameter7 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="P")
+designPoint1.SetParameterExpression(
+    Parameter=parameter7,
+    Expression="6000[Pa]")
+parameter7.ValueQuantityName = "Pressure"
+parameter7.Delete()
+parameter6.ValueQuantityName = "Pressure"
+geometry1.Exit()
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+geometryComponent1.Reset()
+geometry1.Edit()
+parameter8 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter8,
+    Expression="P1")
+parameter9 = Parameters.GetParameter(Name="P8")
+designPoint1.SetParameterExpression(
+    Parameter=parameter9,
+    Expression="P2")
+parameter10 = Parameters.GetParameter(Name="P7")
+designPoint1.SetParameterExpression(
+    Parameter=parameter10,
+    Expression="P2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter9,
+    Expression="P3")
+parameter11 = Parameters.GetParameter(Name="P9")
+designPoint1.SetParameterExpression(
+    Parameter=parameter11,
+    Expression="P4")
+geometry1.Exit()
+geometryComponent1.Reset()
+geometry1.Edit()
+parameter12 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter12,
+    Expression="P1")
+parameter13 = Parameters.GetParameter(Name="P7")
+designPoint1.SetParameterExpression(
+    Parameter=parameter13,
+    Expression="P2")
+parameter14 = Parameters.GetParameter(Name="P8")
+designPoint1.SetParameterExpression(
+    Parameter=parameter14,
+    Expression="P3")
+parameter15 = Parameters.GetParameter(Name="P9")
+designPoint1.SetParameterExpression(
+    Parameter=parameter15,
+    Expression="P4")
+geometry1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+parameter16 = Parameters.GetParameter(Name="P10")
+parameter16.DisplayText = "Material"
+parameter17 = Parameters.GetParameter(Name="P11")
+designPoint1.SetParameterExpression(
+    Parameter=parameter17,
+    Expression="P3/2")
+parameter18 = Parameters.GetParameter(Name="P11")
+designPoint1.SetParameterExpression(
+    Parameter=parameter18,
+    Expression="P3")
+parameter19 = Parameters.GetParameter(Name="P12")
+designPoint1.SetParameterExpression(
+    Parameter=parameter19,
+    Expression="P5")
+designPoint1.SetParameterExpression(
+    Parameter=parameter18,
+    Expression="P3/2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter18,
+    Expression="P3")
+parameter20 = Parameters.GetParameter(Name="P12")
+designPoint1.SetParameterExpression(
+    Parameter=parameter20,
+    Expression="P5")
+parameter12.Description = "Raio externo do vaso"
+parameter13.Description = "altura da geometria"
+parameter14.Description = "espessura das paredes"
+parameter15.Description = "Raio de fillet entre as paredes internas"
+parameter16.Description = "Material do Vaso"
+parameter20.DisplayText = "P"
+parameter20.Description = "Pressão interna do vaso"
+parameter1.Description = "Ver opção"
+parameter2.Description = "Ver opção"
+parameter3.Description = "Ver opção"
+parameter4.Description = "Ver opção"
+parameter6.Description = "Ver opção"
+parameter21 = Parameters.GetParameter(Name="P13")
+parameter21.DisplayText = "Hoop Stress ext"
+parameter22 = Parameters.GetParameter(Name="P14")
+parameter22.DisplayText = "Longitudinal Stress ext"
+parameter23 = Parameters.GetParameter(Name="P15")
+parameter23.DisplayText = "Radial Stress ext"
+parameter24 = Parameters.GetParameter(Name="P16")
+parameter24.DisplayText = "Hoop Stress int"
+parameter25 = Parameters.GetParameter(Name="P17")
+parameter25.DisplayText = "Longitudinal Stress int"
+parameter26 = Parameters.GetParameter(Name="P18")
+parameter26.DisplayText = "Radial Stress int"
+parameter27 = Parameters.GetParameter(Name="P19")
+parameter27.DisplayText = "Hoop Strain ext"
+parameter28 = Parameters.GetParameter(Name="P20")
+parameter28.DisplayText = "Hoop Strain int"
+parameter29 = Parameters.CreateParameter(
+    IsOutput=True,
+    Expression="(P13 + P16)/2",
+    DisplayText="Output Parameter")
+parameter29.DisplayText = "Hoop Stress avg"
+parameter30 = Parameters.CreateParameter(
+    IsOutput=True,
+    Expression="(P14 + P17)/2",
+    DisplayText="Output Parameter")
+parameter30.DisplayText = "Longitudinal Stress avg"
+parameter31 = Parameters.CreateParameter(
+    IsOutput=True,
+    Expression="(P15 + P18)/2",
+    DisplayText="Output Parameter")
+designPoint1.SetParameterExpression(
+    Parameter=parameter31,
+    Expression="Radial stress max")
+designPoint1.SetParameterExpression(
+    Parameter=parameter31,
+    Expression="P18")
+parameter31.DisplayText = "Radial Stress max"
+parameter32 = Parameters.CreateParameter(
+    IsOutput=True,
+    Expression="Hoop Strain avg",
+    DisplayText="Output Parameter")
+designPoint1.SetParameterExpression(
+    Parameter=parameter32,
+    Expression="(P19 + P20)/2")
+parameter32.DisplayText = "Hoop Strain avg"
+model1.Exit()
+designPoint2 = designPoint1.Duplicate()
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="120 [mm]")
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="130 [mm]")
+designPoint3 = Parameters.CreateDesignPoint()
+designPoint3.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="140 [mm]")
+designPoint4 = Parameters.CreateDesignPoint()
+designPoint4.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="150 [mm]")
+designPoint5 = Parameters.CreateDesignPoint()
+designPoint5.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="160 [mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="200 [mm]")
+designPoint2.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="220 [mm]")
+designPoint3.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="240 [mm]")
+designPoint4.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="260 [mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5.1 [mm]")
+designPoint2.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5.2 [mm]")
+designPoint3.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5.3 [mm]")
+designPoint4.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5.4 [mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="2 [MPa]")
+designPoint2.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="3 [MPa]")
+designPoint3.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="4 [MPa]")
+designPoint4.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="5 [MPa]")
+backgroundSession1 = UpdateAllDesignPoints(DesignPoints=[designPoint1, designPoint2, designPoint3, designPoint4, designPoint5])
+designPoint2.Retained = True
+designPoint3.Retained = True
+designPoint4.Retained = True
+designPoint5.Retained = True
+designPoint2.Retained = False
+designPoint3.Retained = False
+designPoint4.Retained = False
+designPoint5.Retained = False
+designPoint5.Retained = True
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint5)
+backgroundSession2 = UpdateAllDesignPoints(DesignPoints=[designPoint5])
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+parameter33 = Parameters.GetParameter(Name="P25")
+designPoint5.SetParameterExpression(
+    Parameter=parameter33,
+    Expression="P4")
+parameter33.DisplayText = "Element Size"
+designPointUpdateSettings1 = GetDesignPointUpdateSettings()
+designPointUpdateSettings1.DesignPointRetainedOrExportedUpdate = "FullProject"
+designPoint1.Retained = False
+backgroundSession3 = UpdateAllDesignPoints(DesignPoints=[designPoint1, designPoint2, designPoint3, designPoint4, designPoint5])
+Save(Overwrite=True)

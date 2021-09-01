@@ -1,0 +1,123 @@
+# encoding: utf-8
+# 2021 R2
+SetScriptVersion(Version="21.2.209")
+system1 = GetSystem(Name="SYS")
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system2 = template1.CreateSystem()
+geometryComponent1 = system2.GetComponent(Name="Geometry")
+geometryComponent2 = system1.GetComponent(Name="Geometry")
+geometryComponent1.ReplaceWithShare(
+    TargetSystem=system2,
+    ComponentToShare=geometryComponent2,
+    SourceSystem=system1)
+model1.Edit()
+modelComponent1.Refresh()
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+model1.Exit()
+Save(Overwrite=True)
+modelComponent2 = system2.GetComponent(Name="Model")
+modelComponent2.Refresh()
+model2 = system2.GetContainer(ComponentName="Model")
+model2.Edit()
+geometryComponent1.DeleteShare(System=system2)
+CleanSystem(Systems=[system2])
+system2.Delete()
+template2 = GetTemplate(
+    TemplateName="Transient Structural",
+    Solver="ANSYS")
+system3 = template2.CreateSystem()
+system4 = template1.ReplaceSystem(System=system3)
+modelComponent3 = system4.GetComponent(Name="Model")
+modelComponent1.TransferData(TargetComponent=modelComponent3)
+Update()
+setup2 = system4.GetContainer(ComponentName="Setup")
+setup2.Edit()
+model3 = system4.GetContainer(ComponentName="Model")
+model3.Exit()
+system4.Delete()
+model1.Edit()
+designPoint1 = Parameters.CreateDesignPoint()
+parameter1 = Parameters.GetParameter(Name="P3")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="9.806 [m s^-2]")
+parameter2 = Parameters.GetParameter(Name="P9")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression='"Unit Steel"')
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression='"Structural Steel"')
+designPoint2 = Parameters.GetDesignPoint(Name="0")
+designPoint2.SetParameterExpression(
+    Parameter=parameter2,
+    Expression='"Unit Steel"')
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+Save(Overwrite=True)
+geometry1.Exit()
+model1.Exit()
+backgroundSession1 = UpdateAllDesignPoints(DesignPoints=[designPoint2, designPoint1])
+designPoint1.Retained = True
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="1 [m s^-2]")
+model1.Exit()
+backgroundSession2 = UpdateAllDesignPoints(DesignPoints=[designPoint2, designPoint1])
+parameter2.DisplayText = "Material"
+parameter3 = Parameters.GetParameter(Name="P10")
+parameter3.DisplayText = "s_min"
+parameter4 = Parameters.GetParameter(Name="P11")
+parameter4.DisplayText = "s_max"
+designPoint2.Note = "Caso unitario"
+designPoint1.Note = "Caso Rea"
+designPoint1.Note = "Caso Real"
+designPoint2.Note = "Caso Unitario"
+ClearMessages()
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint1)
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint2)
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint1)
+results1.Edit()
+model1.Exit()
+geometry1.Edit()
+Save(Overwrite=True)
+geometry1.Exit()
+backgroundSession3 = UpdateAllDesignPoints(DesignPoints=[designPoint2, designPoint1])
+model1.Edit()
+ClearMessages()
+model1.Exit()
+results1.Edit()
+results1.Edit()
+model1.Exit()
+results1.Edit()
+model1.Exit()
+backgroundSession4 = UpdateAllDesignPoints(DesignPoints=[designPoint2])
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint2)
+results1.Edit()
+model1.Exit()
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint1)
+results1.Edit()
+model1.Exit()
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint2)
+results1.Edit()
+model1.Exit()
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint1)
+results1.Edit()
+model1.Exit()
+model1.Edit()
+model1.Exit()
+geometry1.Edit()
+geometry1.Exit()
+results1.Edit()
+model1.Exit()

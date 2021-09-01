@@ -1,0 +1,41 @@
+﻿# 
+# This file contains the parameter values of the Design Points successfully updated by Ansys Workbench.
+# Project name: exercicio_1
+# Creation date: 08/17/2021 11:37:10
+# 
+# 08/17/2021 11:37:10
+# The parameters defined in the project are:
+# ,P7 - M [kg],P4 - L [m],P3 - g [m s^-2],P8 - P [N],P9 - Line Body Assignment
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P7,P4,P3,P8,P9
+DP 0,0.0001,1,9.806,0.00098059999999999987,Unit Steel
+DP 1,0.785,1,9.806,7.69771,Structural Steel
+# 
+# A non parametric change occurred and invalidated design point results.
+# 08/17/2021 12:08:59
+# 
+# 
+# 08/17/2021 12:09:30
+# Parameters have been added and/or removed. The parameters now defined in the project are:
+# ,P7 - M [kg],P4 - L [m],P3 - g [m s^-2],P11 - Direct Stress Maximum [Pa],P10 - Direct Stress Minimum [Pa],P8 - P [N],P9 - Line Body Assignment
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P7,P4,P3,P11,P10,P8,P9
+DP 0,0.0001,1,1,1.99999999495049,0.999999997475243,0.0001,Unit Steel
+DP 1,0.785,1,9.806,153954.203125,76977.1015625,7.69771,Structural Steel
+# 
+# A non parametric change occurred and invalidated design point results.
+# 08/17/2021 12:15:30
+# 
+DP 0,0.010000000000000004,1,1,2,1,0.010000000000000004,Unit Steel
+DP 1,78.500000000000028,1,9.806,153954.203125,76977.1015625,769.77100000000019,Structural Steel
+# 
+# A non parametric change occurred and invalidated design point results.
+# 08/17/2021 12:22:32
+# 
+DP 0,0.010000000000000004,1,1,2,1,0.010000000000000004,Unit Steel
+# 
+# A non parametric change occurred and invalidated design point results.
+# 08/17/2021 18:08:17
+# 
