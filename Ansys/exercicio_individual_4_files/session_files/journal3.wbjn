@@ -1,0 +1,56 @@
+# encoding: utf-8
+# 2021 R2
+SetScriptVersion(Version="21.2.209")
+designPoint1 = Parameters.CreateDesignPoint()
+parameter1 = Parameters.GetParameter(Name="P1")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="100 [mm]")
+parameter2 = Parameters.GetParameter(Name="P2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="200 [mm]")
+parameter3 = Parameters.GetParameter(Name="P3")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="25 [mm]")
+parameter4 = Parameters.GetParameter(Name="P4")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="25 [mm]")
+parameter5 = Parameters.GetParameter(Name="P5")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="35 [MPa]")
+backgroundSession1 = UpdateAllDesignPoints(DesignPoints=[designPoint1])
+parameter6 = Parameters.GetParameter(Name="P21")
+parameter6.ValueQuantityName = "Stress"
+parameter7 = Parameters.GetParameter(Name="P22")
+parameter7.ValueQuantityName = "Stress"
+designPoint2 = Parameters.GetDesignPoint(Name="0")
+designPoint2.Note = "Opção 1"
+designPoint3 = Parameters.GetDesignPoint(Name="1")
+designPoint3.Note = "Opção 2"
+designPoint4 = Parameters.GetDesignPoint(Name="2")
+designPoint4.Note = "Opção 3"
+designPoint5 = Parameters.GetDesignPoint(Name="3")
+designPoint5.Note = "Opção 4"
+designPoint6 = Parameters.GetDesignPoint(Name="4")
+designPoint6.Note = "Opção 5"
+designPoint2.Note = "Opção I"
+designPoint3.Note = "Opção II"
+designPoint4.Note = "Opção III"
+designPoint5.Note = "Opção IV"
+designPoint6.Note = "Opção V"
+designPoint1.Note = "Exemplo livro (paredes grossas)"
+Save(Overwrite=True)
+system1 = GetSystem(Name="SYS")
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+model1.Exit()
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+model1.Exit()
+Save(Overwrite=True)
+backgroundSession2 = UpdateAllDesignPoints(DesignPoints=[designPoint2, designPoint3, designPoint4, designPoint5, designPoint1])
+Save(Overwrite=True)
