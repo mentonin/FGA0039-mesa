@@ -1,0 +1,204 @@
+# encoding: utf-8
+# 2021 R2
+SetScriptVersion(Version="21.2.209")
+Save(Overwrite=True)
+Save(Overwrite=True)
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit(IsSpaceClaimGeometry=True)
+geometry1.Exit()
+geometry1.Edit()
+parameter1 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="L")
+parameter2 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="W")
+parameter3 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="D")
+parameter4 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="t")
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="1270[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="500[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="50[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="12[mm]")
+parameter5 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="F")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="12[kN]")
+parameter6 = Parameters.GetParameter(Name="P1")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="P6")
+parameter7 = Parameters.GetParameter(Name="P2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter7,
+    Expression="P7")
+parameter8 = Parameters.GetParameter(Name="P3")
+designPoint1.SetParameterExpression(
+    Parameter=parameter8,
+    Expression="P8")
+parameter9 = Parameters.GetParameter(Name="P4")
+designPoint1.SetParameterExpression(
+    Parameter=parameter9,
+    Expression="P6/2")
+parameter10 = Parameters.GetParameter(Name="P5")
+designPoint1.SetParameterExpression(
+    Parameter=parameter10,
+    Expression="P7/2")
+parameter11 = Parameters.GetParameter(Name="P11")
+designPoint1.SetParameterExpression(
+    Parameter=parameter11,
+    Expression="P9")
+geometry1.Exit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+model1.Exit()
+geometry1.Edit()
+geometry1.Exit()
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+geometryComponent1.Reset()
+parameter1.Delete()
+parameter2.Delete()
+parameter3.Delete()
+parameter4.Delete()
+parameter5.Delete()
+parameter12 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="L")
+parameter13 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="W")
+parameter14 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="T")
+parameter15 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="D")
+parameter16 = Parameters.CreateParameter(
+    IsOutput=False,
+    DisplayText="F")
+designPoint1.SetParameterExpression(
+    Parameter=parameter12,
+    Expression="1270[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter13,
+    Expression="500[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter14,
+    Expression="12[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter15,
+    Expression="50[mm]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter16,
+    Expression="12[kN]")
+geometry1.Edit(IsSpaceClaimGeometry=True)
+geometry1.Exit()
+geometry1.Edit()
+parameter17 = Parameters.GetParameter(Name="P7")
+parameter17.DisplayText = "R"
+parameter18 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter18,
+    Expression="P2")
+parameter19 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter19,
+    Expression="P1")
+parameter20 = Parameters.GetParameter(Name="P7")
+designPoint1.SetParameterExpression(
+    Parameter=parameter20,
+    Expression="P2")
+parameter21 = Parameters.GetParameter(Name="P8")
+designPoint1.SetParameterExpression(
+    Parameter=parameter21,
+    Expression="P4/2")
+geometry1.Exit()
+geometry1.Edit()
+parameter22 = Parameters.GetParameter(Name="P9")
+designPoint1.SetParameterExpression(
+    Parameter=parameter22,
+    Expression="P3")
+geometry1.Exit()
+geometryComponent1.Reset()
+geometry1.Edit()
+parameter23 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter23,
+    Expression="P1")
+parameter24 = Parameters.GetParameter(Name="P7")
+designPoint1.SetParameterExpression(
+    Parameter=parameter24,
+    Expression="P2")
+parameter25 = Parameters.GetParameter(Name="P8")
+designPoint1.SetParameterExpression(
+    Parameter=parameter25,
+    Expression="P3")
+parameter26 = Parameters.GetParameter(Name="P9")
+designPoint1.SetParameterExpression(
+    Parameter=parameter26,
+    Expression="P4")
+geometry1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+designPoint1.SetParameterExpression(
+    Parameter=parameter23,
+    Expression="P1/2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter24,
+    Expression="P2/2")
+Update()
+Refresh()
+Update()
+parameter27 = Parameters.GetParameter(Name="P11")
+designPoint1.SetParameterExpression(
+    Parameter=parameter27,
+    Expression="0 [N]")
+designPoint1.SetParameterExpression(
+    Parameter=parameter27,
+    Expression="P5")
+parameter23.DisplayText = "L_"
+parameter24.DisplayText = "W_"
+parameter23.Description = "Comprimento do quadrante da placa"
+parameter24.Description = "Largura do Quadrante da placa"
+parameter24.Description = "Largura do quadrante da placa"
+parameter25.Description = "Espessura da placa"
+parameter26.Description = "Diametro do furo"
+parameter28 = Parameters.GetParameter(Name="P10")
+parameter28.Description = "Material da placa"
+parameter28.DisplayText = "Material"
+parameter27.DisplayText = "F_"
+parameter27.Description = "Força aplicada no quadrante"
+parameter27.Description = "Força aplicada no quadrante da placa"
+designPoint1.SetParameterExpression(
+    Parameter=parameter27,
+    Expression="P5/2")
+parameter12.Description = "Largura da placa (ver opção)"
+parameter13.Description = "Largura da placa (ver opção)"
+parameter12.Description = "Comprimento da placa (ver opção)"
+parameter14.Description = "Espessura da placa (ver opção)"
+parameter15.Description = "Diâmetro do furo (ver opção)"
+parameter26.Description = "Diâmetro do furo"
+parameter16.Description = "Força aplicada na placa (ver opção)"
+Update()

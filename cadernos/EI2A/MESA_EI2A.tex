@@ -1,0 +1,100 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+
+\title{Exercício Individual 2 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lr}
+        \toprule
+        \thead{Option} & \thead{II} \\
+        \midrule
+        X              & 2          \\
+        \bottomrule
+    \end{tabular}
+    \caption{Problem Variables}
+    \label{tab: option}
+\end{table}
+
+\section{Analytical Solution}\label{sec: analytical}
+The problem can be modeled as shown in \cref{fig: sketch}, where the \(x\) coordinate is measured from the support to the tip of the beam. A cross-sectional cut can be conceptually realized, and we can use equilibrium equations to balance the tension across the cut with the forces on the beam. We can apply these equations on the top or bottom parts of the beam, but for convenience we will choose the bottom part.
+
+\boxfigure[label=fig: sketch, width=0.6\textwidth]{Problem sketch.}{img/EI2_drawing}
+
+Since the weight is uniformly distributed along the length of the beam, we know that the weight in the bottom part will be proportional to \(1 - \frac{x}{L}\). The force \(P\) applied at the end of the beam is defined by \(P = XW\), where \(X\) can be found in \cref{tab: option}. Balancing out all forces along the \(x\) axis, we find \cref{eq: equilibrium}.
+
+\begin{symsubs}[label=eq: equilibrium, float=htbp, width=0.5\textwidth]{Equilibrium equation (with substitutions from \cref{tab: option})}
+    \begin{align*}
+        \sigma A & = P + W \qty(1 - \frac{x}{L})        \\
+        \sigma A & = W \qty(1 + X - \frac{x}{L})        \\
+        \sigma   & = \rho g L \qty(1 + X - \frac{x}{L})
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        \sigma & = \rho g L \qty(1 + 2 - \frac{x}{L}) \\
+        \sigma & = \rho g L \qty(3 - \frac{x}{L})     \\
+    \end{align*}
+\end{symsubs}
+
+From \cref{eq: equilibrium}, we can find the maximum tension \(\sigma_{\max} =\sigma_{(x=0)} = 3 \rho g L\) at the top of the beam; and the minimum tension \(\sigma_{\min} =\sigma_{(x=L)} = 2 \rho g L\) at the bottom of the beam
+
+
+\section{Numerical Solution}\label{sec: numerical}
+Another approach for solving the problem is to use software tools to calculate the maximum stress numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometry. To do that, we can use the software Design Modeler. Since our problem is a simple beam, we can model our geometry as a single line with a cross-section. The variables \(L\), \(A\), and the cross-section are arbitrary, so we will choose \SI{1}{\meter} and a \SI{1}{\cm\squared} square for ease of analysis.
+
+The modeled geometry, then, can be seen in \cref{fig: geometry}.
+
+\boxfigure[label=fig: geometry, width=0.6\textwidth]{Problem geometry.}{img/geometry}
+
+\subsection{Mesh Creation}
+
+The problem and the geometry 1 dimensional, so the mesh will not affect our results. The generated mesh can be seen in \cref{fig: mesh}.
+
+\boxfigure[label=fig: mesh, width=0.6\textwidth]{Mesh.}{img/mesh}
+
+\subsection{Physical Setup}
+
+Our setup includes the load over the end of the beam, the support conditions on the other end, and the weight of the beam itself. The load is applied as a force at the end point, the support is a fixed condition, and the weight must be applied on the direction of the beam. We also have to apply a material, and in this case we will use the software's default material, called Structural Steel. Its relevant property for this problem is its density of \SI{7850}{\kg\per\meter\cubed} The load must also be scaled according to the mass of the object. \Cref{fig: setup} show the applied load and support conditions, respectively.
+
+\boxfigure[label=fig: setup, width=0.6\textwidth]{Applied loads and support.}{img/setup}
+
+
+\subsection{Results}
+Finally, the software can solve our model, and we can calculate the desired values. We are interested in the direct stress distribution along the axis, so we can use the Beam Tool to get a Direct Stress graph that shows this quantity, and ask for the program to also output the maximum value. \Cref{fig: results} shows this graph, and the maximum and minimum stresses were calculated by the software as \(\sigma_{\max} = \SI{0.23095}{\MPa}\) and \(\sigma_{\max} = \SI{0.15396}{\MPa}\).
+
+\boxfigure[label=fig: results, width=0.6\textwidth]{Direct stress distribution.}{img/results}
+
+\section{Method comparison}
+To compare the two methods, the symbolic formula found in \cref{eq: equilibrium} can be replaced by a numerical result using our chosen values for \(L\), \( \rho \), and \(g\). The substituion is straight forward, and shown in \cref{eq: numsubs}.
+
+\begin{symsubs}[label=eq: numsubs, float=htbp]{Tension maxima (with substitutions)}
+    \begin{align*}
+        \sigma_{\max} & = 3 \rho g L \\
+        \sigma_{\min} & = 2 \rho g L
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        \sigma_{\max} & = \qtyproduct[product-units = bracket]{3 x 7850 x 9.80665 x 1}{\kg\meter\per\second\squared\per\meter\squared} \\
+                      & = \SI{0.23095}{\MPa}                                                                                           \\
+        \sigma_{\min} & = \qtyproduct[product-units = bracket]{2 x 7850 x 9.80665 x 1}{\kg\meter\per\second\squared\per\meter\squared} \\
+                      & = \SI{0.15396}{\MPa}                                                                                           \\
+    \end{align*}
+\end{symsubs}
+
+The maximum and minimum stresses calculated according to analytical and numerical methods were identical up to the fifth digit. The relative error of the numerical method, then, is less than \SI{0.01}{\percent}. Therefore, we can conclude that the numerical results are validated and within reasonable error of the analytical result.
+
+\end{document}

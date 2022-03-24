@@ -1,0 +1,24 @@
+﻿# 
+# This file contains the parameter values of the Design Points successfully updated by Ansys Workbench.
+# Project name: EI2A
+# Creation date: 02/14/2022 17:43:30
+# 
+# 02/14/2022 17:43:30
+# The parameters defined in the project are:
+# ,P1 - Force Magnitude [N],P2 - Line Body Mass [kg],P3 - X
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P1,P2,P3
+DP 0,1539.64405,78.5,2
+# 
+# A non parametric change occurred and invalidated design point results.
+# 02/14/2022 18:12:52
+# 
+# 
+# 02/14/2022 18:27:06
+# Parameters have been added and/or removed. The parameters now defined in the project are:
+# ,P4 - Force Magnitude [N],P2 - Line Body Mass [kg],P3 - X,P5 - Direct Stress Maximum [MPa]
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P4,P2,P3,P5
+DP 0,1539.6440500000006,78.500000000000028,2,0.23094660043716431

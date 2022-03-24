@@ -1,0 +1,32 @@
+﻿# 
+# This file contains the parameter values of the Design Points successfully updated by Ansys Workbench.
+# Project name: EI3A
+# Creation date: 02/24/2022 12:01:25
+# 
+# 02/24/2022 12:01:25
+# The parameters defined in the project are:
+# ,P1 - a [mm],P2 - b [mm],P3 - c [mm],P4 - Y1 [N],P5 - X1 [N]
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P1,P2,P3,P4,P5
+DP 0,18,100,80,300,400
+# 
+# A non parametric change occurred and invalidated design point results.
+# 02/24/2022 12:21:51
+# 
+# 
+# A non parametric change occurred and invalidated design point results.
+# 02/28/2022 19:46:23
+# 
+# 
+# A non parametric change occurred and invalidated design point results.
+# 02/28/2022 19:52:31
+# 
+# 
+# 02/28/2022 20:14:18
+# Parameters have been added and/or removed. The parameters now defined in the project are:
+# ,P1 - a [mm],P2 - b [mm],P3 - c [mm],P4 - Y1 [N],P5 - X1 [N],P6 - Normal Stress Maximum [MPa],P7 - Normal Stress Minimum [MPa],P10 - X Deformation Average [mm],P9 - Y Deformation Average [mm],P11 - Output Parameter [radian]
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name,P1,P2,P3,P4,P5,P6,P7,P10,P9,P11
+DP 0,28,100,80,300,400,224.19938659667969,-71.499153137207031,9.4158642776310426,-0.29873215074555692,1.5390804937154055

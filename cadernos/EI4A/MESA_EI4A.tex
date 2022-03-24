@@ -1,0 +1,260 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+\sisetup{
+    round-mode = figures,
+    round-precision = 5
+}
+
+\title{Exercício Individual 4 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+\graphicspath{{img/}}
+\begin{document}
+\frenchspacing
+\maketitle
+
+\begin{table}[h]
+    \caption{Problem Variables for exercise 1}
+    \label{tab: option.1}
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Option} & \thead{IV}    \\
+        \midrule
+        \(L\)          & \SI{440}{\mm} \\
+        \(a\)          & \SI{8}{\mm}   \\
+        \(b\)          & \SI{10}{\mm}  \\
+        \(h\)          & \SI{14}{\mm}  \\
+        \(t_1\)        & \SI{5}{\mm}   \\
+        \(t_2\)        & \SI{5}{\mm}   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \caption{Problem Variables for exercise 2}
+    \label{tab: option.2}
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Option} & \thead{IV}    \\
+        \midrule
+        \(L\)          & \SI{340}{\mm} \\
+        \(b\)          & \SI{10}{\mm}  \\
+        \(h\)          & \SI{14}{\mm}  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Analytical Solution}\label{sec: analytical}
+
+Buckling loads can be calculated according to \cref{eq:euler_buckling}, known as Euler's Critical Load formula. \( K \) is the equivalent length factor calculated from its support conditions, and its value for the relevant cases for this work are shown in \cref{tab:equivalent_length}.
+
+\begin{symsubs}[label=eq:euler_buckling, float=htbp]{Euler's Formula}
+    \begin{equation}
+        P_\mathit{crit} = \frac{\pi^2 E I}{(K L)^2}
+    \end{equation}
+\end{symsubs}
+
+\begin{table}[htbp]
+    \caption{Equivalent Length for some support cases}
+    \label{tab:equivalent_length}
+    \centering
+    \begin{tabular}{lr}
+        \toprule
+        \thead{Support case}          & \thead{\( K \)} \\
+        \midrule
+        Both ends simply supported    & \num{1.0}       \\
+        One end fixed, other end free & \num{2.0}       \\
+    \end{tabular}
+\end{table}
+
+As buckling can occur in any direction, the relevant moment of inertia \(I\) is the minimum principal moment, and buckling will occur perpendicular to it. The principal moments of inertia and their directions can be calculated using \cref{eq:principal_moments}.
+
+\begin{symsubs}[label=eq:principal_moments, float=htbp]{Principal moments}
+    \begin{align}
+        I_p    & = \frac{I_{xx} + I_{yy}}{2} \pm \sqrt{\left( \frac{I_{xx} - I_{yy}}{2} \right)^2 + {I_{xy}}^2}
+        \\
+        \theta & = \frac{1}{2} \arctan{\left( \frac{2 I_{xy}}{I_{xx} - I_{yy}} \right)}
+    \end{align}
+\end{symsubs}
+
+\FloatBarrier
+\subsection{Exercise 1}\label{sec: analytical.1}
+
+\boxfigure[label=fig:cross-section, width=0.6\textwidth]{Cross-section of the beam.}{cross-section}
+
+For the first problem, we first have to calculate the geometrical properties of the cross-section. For the cross section depicted in \cref{fig:cross-section,tab: option.2}, the moments of inertia round the cartesian axes are \( I_{xx} = \SI{5258.9}{\mm\tothe{4}} \), \( I_{yy} = \SI{5310.0}{\mm\tothe{4}} \), and \( I_{xy} = \SI{413.0}{\mm\tothe{4}} \). We have to substitute these values back into \cref{eq:principal_moments}, as shown in \cref{eq:principal_moments.1}.
+
+\begin{symsubs}[label=eq:principal_moments.1, float=htbp]{Principal moments for the cross-section}
+    \begin{align}
+        I_p    & = \frac{\num{5258.9} + \num{5310.0}}{2} \pm \sqrt{\left( \frac{\num{5258.9} - \num{5310.0}}{2} \right)^2 + {\num{413.0}}^2}
+        \\
+        \theta & = \frac{1}{2} \arctan{\left( \frac{2 \times \num{413.0}}{\num{5258.9} - \num{5310.0}} \right)}
+    \end{align}
+    \tcblower
+    \begin{align}
+        I_p    & = \begin{cases}
+                       \SI{5698.2395630632}{\mm\tothe{4}}
+                       \\
+                       \SI{4870.6604369368}{\mm\tothe{4}}
+                   \end{cases}
+        \\
+        \theta & = \begin{cases}
+                       \SI{-43.2299710825}{\degree}
+                       \\
+                       \SI{46.7700289175}{\degree}
+                   \end{cases}
+    \end{align}
+\end{symsubs}
+
+\Cref{eq:euler_buckling.1} shows the substitution of the minimum moment of inertia back into \cref{eq:euler_buckling}, choosing a value of \SI{2e11}{\pascal} for the material's Young's modulus. The critical buckling load, then, is \( P_\mathit{crit} = \SI{12415.1579763955}{\newton} \) for this beam. Buckling will occur in the direction perpendicular to the direction of minimal inertia, that is, \( \theta = \SI{-43.2299710825}{\degree} \).
+
+\begin{symsubs}[label=eq:euler_buckling.1, float=htbp]{Substitution into Euler's Formula}
+    \begin{equation}
+        P_\mathit{crit} = \frac{\pi^2 \times \num{2e11} \times \num{4870.6604369368}}{(\num{2} \num{0.440})^2}
+    \end{equation}
+    \tcblower
+    \begin{equation}
+        P_\mathit{crit} = \SI{12415.1579763955}{\newton}
+    \end{equation}
+\end{symsubs}
+
+\begin{table}[h]
+    \caption{Analytical Values for exercise 1}
+    \label{tab:_analytical_values.1}
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable} & \thead{Value}                  \\
+        \midrule
+        \( P_{cr} \)     & \SI{12415.1579763955}{\newton} \\
+        \( \theta \)     & \SI{-43.2299710825}{\degree}   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Exercise 2}\label{sec: analytical.2}
+
+For the second problem, the cross-section is rectangular and, thus, its values principal moments coincide with the moments about the geometrical axes. From the values in \cref{tab: option.2}, its moments of inertia are \( I_{xx} = \SI{1166.7}{\mm\tothe{4}} \) and \( I_{yy} = \SI{2286.7}{\mm\tothe{4}} \).
+
+\Cref{eq:euler_buckling.2} shows the substitution of the minimum moment of inertia back into \cref{eq:euler_buckling}, choosing a value of \SI{2e11}{\pascal} for the material's Young's modulus. The critical buckling load, then, is \( P_\mathit{crit} = \SI{19921.9160116798}{\newton} \) for this beam. Buckling will occur in the direction perpendicular to the direction of minimal inertia, that is, along the \(x\) axis.
+
+\begin{symsubs}[label=eq:euler_buckling.2, float=htbp]{Substitution into Euler's Formula}
+    \begin{equation}
+        P_\mathit{crit} = \frac{\pi^2 \times \num{2e11} \times \num{1166.7}}{(\num{2} \num{0.340})^2}
+    \end{equation}
+    \tcblower
+    \begin{equation}
+        P_\mathit{crit} = \SI{19921.9160116798}{\newton}
+    \end{equation}
+\end{symsubs}
+
+\begin{table}[h]
+    \caption{Analytical Values for exercise 2}
+    \label{tab:_analytical_values.2}
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable} & \thead{Value}                  \\
+        \midrule
+        \( P_{cr} \)     & \SI{19921.9160116798}{\newton} \\
+        \( \theta \)     & \SI{0}{\degree}                \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+
+
+\FloatBarrier
+\section{Numerical Solution}\label{sec: numerical}
+Another approach for solving the problem is to use software tools to calculate the maximum stress numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\FloatBarrier
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometries. To do that, we can use the software Design Modeler. Since our problems are simple beams, we can model our geometries as lines with a cross-section. The cross-sections were modeled according to the Option, and its sketches can be seen in \cref{fig: cross-section sketch.1,fig: cross-section sketch.2}. The 3D modeled geometries, then, can be seen in \cref{fig: geometry.1,fig: geometry.2}.
+
+\boxfigure[label=fig: cross-section sketch.1, width=0.6\textwidth]{Cross section sketch for exercise 1.}{sketch1}
+\boxfigure[label=fig: geometry.1, width=0.6\textwidth]{Problem geometry for exercise 1.}{geometry1}
+\boxfigure[label=fig: cross-section sketch.2, width=0.6\textwidth]{Cross section sketch for exercise 2.}{sketch2}
+\boxfigure[label=fig: geometry.2, width=0.6\textwidth]{Problem geometry for exercise 2.}{geometry2}
+
+\FloatBarrier
+\subsection{Mesh Creation}
+
+The problem and the geometry are linear and 1 dimensional, so the mesh will not affect our results and can be kept at its default settings.
+
+\FloatBarrier
+\subsection{Physical Setup}
+
+The setup for a buckling study in ANSYS involves setting the correct support conditions, and supplying a pre-stress load to the eigenvalue buckling solver. The pre-stress load is applied as a force at the end of the beam, and was arbitrarily set as unitary; the supports were applied according to each beam condition, and this setup is shown in \cref{fig: setup.1,fig: setup.2}. We also have to apply a material, and in this case we will use the software's default material, called Structural Steel. The only relevant property of this material for this study is its Young's modulus, \(E = \SI{2e11}{\pascal}\), the same used in the analytical section.
+
+\boxfigure[label=fig: setup.1, width=0.6\textwidth]{Setup for Exercise 1.}{loads1}
+\boxfigure[label=fig: setup.2, width=0.6\textwidth]{Setup for Exercise 2.}{loads2}
+
+
+\FloatBarrier
+\subsection{Results}
+Finally, the software can solve our model, and we can calculate the desired values. We are interested in the Critical Buckling load (calculated as a multiplier of the pre-stress load), as well as the buckling direction. Any result can show the multiplier, while the direction can be calculated from the directional deformations as \( \theta = \arctan(\epsilon_y / \epsilon_x) \). The results calculated by the software are shown in \cref{tab: numerical values.1,tab: numerical values.2}.
+
+\begin{table}[h]
+    \caption{Numerical Results for Exercise 1}
+    \label{tab: numerical values.1}
+    \centering
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable} & \thead{Value}                 \\
+        \midrule
+        \( P_{cr} \)     & \SI{12388.457800907}{\newton} \\
+        \( \theta \)     & \SI{0.0744003855}{\degree}    \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \caption{Numerical Results for Exercise 2}
+    \label{tab: numerical values.2}
+    \centering
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable} & \thead{Value}                 \\
+        \midrule
+        \( P_{cr} \)     & \SI{19877.708687557}{\newton} \\
+        \( \theta \)     & \SI{0}{\degree}               \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\FloatBarrier
+\section{Method comparison}
+To compare the two methods, we can calculate the relative error for the critical loads and the absolute error for buckling directions. \Cref{tab:comparison} shows the errors for both exercises, and we can see that the numerical solution closely approximates the numerical one.
+
+\begin{table}[htbp]
+    \caption{Error between the numerical and analytical solutions}
+    \label{tab:comparison}
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable}   & \thead{Error}                \\
+        \midrule
+        \thead{Exercise 1} &                              \\
+        \( P_{cr} \)       & \SI{-0.21506110}{\percent}   \\
+        \( \theta \)       & \SI{-0.001245}{\degree}      \\
+        \midrule
+        \thead{Exercise 2} &                              \\
+        \( P_{cr} \)       & \SI{-0.0022190297}{\percent} \\
+        \( \theta \)       & \SI{0}{\degree}              \\
+    \end{tabular}
+\end{table}
+
+\end{document}

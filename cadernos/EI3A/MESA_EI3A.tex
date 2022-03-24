@@ -1,0 +1,198 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+
+\title{Exercício Individual 3 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+\graphicspath{{img/}}
+\begin{document}
+\frenchspacing
+\maketitle
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Option} & \thead{II}        \\
+        \midrule
+        \(X_1\)        & \SI{400}{\newton} \\
+        \(Y_1\)        & \SI{300}{\newton} \\
+        \(a\)          & \SI{28}{\mm}      \\
+        \(b\)          & \SI{100}{\mm}     \\
+        \(c\)          & \SI{80}{\mm}      \\
+        \bottomrule
+    \end{tabular}
+    \caption{Problem Variables}
+    \label{tab: option}
+\end{table}
+
+\section{Analytical Solution}\label{sec: analytical}
+The direct stress in the cross-section and the direction of bending can be calculated from \cref{eq: sigma_alpha}. To solve it, we need to calculate the bending moments and the geometric properties of the cross-section depicted in \cref{fig: cross-section}. As we are interested in the stress maxima, we will take the maximum bending moments, i.e. the bending moment at the fixed end.
+
+\boxfigure[label=fig: cross-section, width=0.6\textwidth]{Cross-section of the beam.}{img/cross-section}
+
+\begin{symsubs}[label=eq: sigma_alpha, float=htbp]{Direct Tension and bending direction}
+    \begin{align*}
+        \sigma(x, y) & = \frac{\pqty{I_{xx}M_y - I_{xy}M_x} x + \pqty{I_{yy}M_x - I_{xy}M_y} y}{I_{xx}I_{yy} - {I_{xy}}^2}
+        \\
+        \tan\alpha   & = \frac{I_{yy}M_x - I_{xy}M_y}{I_{xx}M_y - I_{xy}M_x}
+    \end{align*}
+\end{symsubs}
+
+\begin{symsubs}[label=eq: areas, float=htbp, width=\textwidth]{Areas of the cross-section}
+    \begin{align*}
+        A_0 & = at
+        \\
+        A_1 & = (b-2t)t
+        \\
+        A_2 & = ct
+        \\
+        A   & = A_0 + A_1 + A_2
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        A_0 & = \SI{56}{\mm\squared}
+        \\
+        A_1 & = \SI{192}{\mm\squared}
+        \\
+        A_2 & = \SI{160}{\mm\squared}
+        \\
+        A   & = \SI{408}{\mm\squared}
+    \end{align*}
+\end{symsubs}
+
+\begin{symsubs}[label=eq: centroid, float=htbp, width=\textwidth]{Position of the centroid}
+    \begin{align*}
+        x_c & = \frac{A_0 \frac{a}{2} + A_1 \frac{t}{2} + A_2 \frac{c}{2}}{A}
+        \\
+        y_c & = \frac{A_0 \pqty{b - \frac{t}{2}} + A_1 \frac{b}{2} + A_2 \frac{t}{2}}{A}
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        x_c & = \SI{18.078}{\mm}
+        \\
+        y_c & = \SI{37.510}{\mm}
+    \end{align*}
+\end{symsubs}
+
+\begin{symsubs}[label=eq: inertia, float=htbp, width=\textwidth]{Second Moments of Inertia}
+    \begin{align*}
+        I_{xx} & = \frac{A_0 t^2}{12} + A_0 \pqty{b - \frac{t}{2} - y_c}^2
+        + \frac{A_1 (b - 2t)^2}{12} + A_1 \pqty{\frac{b}{2} - y_c}^2
+        + \frac{A_2 t^2}{12} + A_2 \pqty{\frac{t}{2} - y_c}^2
+        \\
+        I_{yy} & = \frac{A_0 a^2}{12} + A_0 \pqty{\frac{a}{2} - x_c}^2
+        + \frac{A_1 t^2}{12} + A_1 \pqty{\frac{t}{2} - x_c}^2
+        + \frac{A_2 c^2}{12} + A_2 \pqty{\frac{c}{2} - x_c}^2
+        \\
+        I_{xy} & = A_0 \pqty{b - \frac{t}{2} - y_c} \pqty{\frac{a}{2} - x_c}
+        + A_1 \pqty{\frac{b}{2} - y_c} \pqty{\frac{t}{2} - x_c}
+        + A_2 \pqty{\frac{t}{2} - y_c} \pqty{\frac{c}{2} - x_c}
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        I_{xx} & = \SI{6.0249e5}{\mm\squared}
+        \\
+        I_{yy} & = \SI{2.2288e5}{\mm\squared}
+        \\
+        I_{xy} & = \SI{-1.8306e5}{\mm\squared}
+        \\
+    \end{align*}
+\end{symsubs}
+
+\begin{symsubs}[label=eq: bending moments, float=htbp, width=\textwidth]{Maximum bending moments}
+    \begin{align*}
+        M_x & = - Y_1 L
+        \\
+        M_y & = X_1 L
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        M_x & = \SI{-6e5}{\newton\mm}
+        \\
+        M_y & = \SI{8e5}{\newton\mm}
+    \end{align*}
+\end{symsubs}
+
+Substituting values back into \cref{eq: sigma_alpha}, we can find the bending direction, and the neutral axis is perpendicular to the bending direction:
+
+\begin{symsubs}[label=eq: alpha, float=htbp, width=\textwidth]{Bending direction}
+    \begin{align*}
+        \tan\alpha & = \frac{I_{yy}M_x - I_{xy}M_y}{I_{xx}M_y - I_{xy}M_x}
+    \end{align*}
+    \tcblower
+    \begin{align*}
+        \alpha & = \SI{1.9573}{\degree}
+    \end{align*}
+\end{symsubs}
+
+Evaluating \cref{eq: sigma_alpha} in a few points of interest, we can find maximum and minimum direct tensions. The maxima will be located at the points farthest from the neutral axis, so the points of interest are located in the corners of the cross-section. Further, since the bending direction \( \alpha \) is nearly horizontal, we can reduce our points of interest to just the rightmost and leftmost corners (i.e. discard \((a, b)\) and \((a, b-t)\) from the points of interest). Substituting all the values, we find the sought values, tabulated in \cref{tab: analytical values}. The locations of maximum and minimum stresses are, respectively, \((0, 0)\) and \((c, t)\).
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable}    & \thead{Value}         \\
+        \midrule
+        \( \sigma_{\max} \) & \SI{224.20}{\MPa}     \\
+        \( \sigma_{\min} \) & \SI{-71.499}{\MPa}    \\
+        NA direction        & \SI{91.9573}{\degree} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Analytical Values}
+    \label{tab: analytical values}
+\end{table}
+
+
+\section{Numerical Solution}\label{sec: numerical}
+Another approach for solving the problem is to use software tools to calculate the maximum stress numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometry. To do that, we can use the software Design Modeler. Since our problem is a simple beam, we can model our geometry as a single line with a cross-section. The cross-section was modeled according to the Option, and its sketch can be seen in \cref{fig: cross-section sketch}. The 3D modeled geometry, then, can be seen in \cref{fig: geometry}.
+
+\boxfigure[label=fig: cross-section sketch, width=0.6\textwidth]{Cross section sketch.}{img/sketch}
+\boxfigure[label=fig: geometry, width=0.6\textwidth]{Problem geometry.}{img/geometry}
+
+\subsection{Mesh Creation}
+
+The problem and the geometry are linear and 1 dimensional, so the mesh will not affect our results. The generated mesh can be seen in \cref{fig: mesh}.
+
+\boxfigure[label=fig: mesh, width=0.6\textwidth]{Mesh.}{img/mesh}
+
+\subsection{Physical Setup}
+
+Our setup includes the load over the end of the beam and the support conditions on the other end. The load is applied as a force at the end point and the support is a fixed condition. We also have to apply a material, and in this case we will use the software's default material, called Structural Steel. The material properties are not relevant for this problem as long as it is isotropic and we are within the elastic regime conditions. \Cref{fig: setup} shows the applied load and support conditions.
+
+\boxfigure[label=fig: setup, width=0.6\textwidth]{Applied loads and support.}{img/loads}
+
+
+\subsection{Results}
+Finally, the software can solve our model, and we can calculate the desired values. We are interested in the direct stress maxima, as well as the neutral axis direction. The Direct Stress tool can calculate the stress maxima, while the bending direction can be calculated from the deformations. \Cref{fig: results} the stress distribution, and the actual values we are after were extracted from the solution and tabulated in \cref{tab: numerical values}
+
+\boxfigure[label=fig: results, width=0.6\textwidth]{Direct stress distribution (mirrored).}{img/results}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cr}
+        \toprule
+        \thead{Variable}    & \thead{Value}         \\
+        \midrule
+        \( \sigma_{\max} \) & \SI{224.20}{\MPa}     \\
+        \( \sigma_{\min} \) & \SI{-71.499}{\MPa}    \\
+        NA direction        & \SI{91.8172}{\degree} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Numerical Results}
+    \label{tab: numerical values}
+\end{table}
+
+\section{Method comparison}
+To compare the two methods, we can calculate the relative error for the stress maxima. The maximum and minimum stresses calculated according to analytical and numerical methods were identical up to the fifth digit, and the sixth digit wasn't extracted for either calculation. While the calculations could be made more precise to find the actual error value, the relative error is extremely small (less than \SI{0.01}{\percent}). Therefore, we can conclude that the numerical results are validated and within reasonable error of the analytical result.
+
+\end{document}

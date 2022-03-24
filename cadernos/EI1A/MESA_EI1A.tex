@@ -1,0 +1,64 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+
+\title{Exercício Individual 1 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+\graphicspath{{img/}}
+\begin{document}
+\maketitle
+
+\section{Analytical Solution}
+
+The maximum stress on a plate with a circular hole can be calculated using \cref{eq: max stress}, where \(K_t\) is the stress concentration factor, \(F\) is the applied force and \(A\) is the minimum area. The area can be calculated from the geometry as \(A = (W-D)T\), while the stress concentration factor was extensively calculated empirically and can be found in the literature for any given ration \(D/W\). Here, we use an online tool (\url{https://mechanicalc.com/calculators/stress-concentration/}) to find \(K_t = 2.16\).
+
+\begin{equation}\label{eq: max stress}
+    \sigma_{\max} = K_t \frac{F}{A}
+\end{equation}
+
+\begin{equation}\label{eq: substituting}
+    \sigma_{\max} = 2.16 \times \frac{8}{(220 - 110) \times 3} = \SI{52.36}{\MPa}
+\end{equation}
+
+Substituting all values as seen in \cref{eq: substituting}, the final estimate for the maximum stress is found to be \(\sigma_{\max} = \SI{52.36}{\MPa}\).
+
+\section{Numerical Solution}
+Another approach for solving the problem is to use software tools to calculate the maximum stress numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometry. To do that, we can use the software Design Modeler. Since our problem is a quasi-2D plate, we can make a single sketch and extrusion to create our geometry. To reduce computational burden, we can also simplify the geometry across its 3 planes of symmetry, computing only an eighth of the full geometry without loss of accuracy.
+
+The sketch, then, can be seen in \cref{fig: 2D sketch}. It was extruded by half the total plate thickness to form the solid shown in \cref{fig: 3D geometry}
+
+\boxfigure[label=fig: 2D sketch, width=0.6\textwidth]{2D sketch of the geometry.}{sketch}
+\boxfigure[label=fig: 3D geometry, width=0.6\textwidth]{3D geometry.}{geometry}
+
+\subsection{Mesh Creation}
+
+The problem and the geometry are simple, so the automatically generated mesh is good enough for the task. To get more precise results, the only non-default option used was to set element size to \SI{10}{\mm}. The generated mesh can be seen in \cref{fig: mesh}.
+
+\boxfigure[label=fig: mesh, width=0.6\textwidth]{Mesh.}{mesh}
+
+\subsection{Physical Setup}
+
+Our setup includes the load over the end of the plates and the symmetry conditions on the 3 symmetry planes. The load is applied as a force over the end surface, and reduced to a fourth of the original load, as we are only simmulating a fourth of the loaded area. The symmetry conditions are of no mass crossing over the symmetry planes, so we apply a frictionless support over those planes. \Cref{fig: load,fig: supports} show the applied load and support conditions, respectively.
+
+\boxfigure[label=fig: load, width=0.6\textwidth]{Applied load.}{load}
+\boxfigure[label=fig: supports, width=0.6\textwidth]{Symmetry conditions.}{supports}
+
+
+\subsection{Results}
+Finally, the software can solve our model and we can calculate the desired values. We are interested inn the maximum stress, so we can use the Equivalent Stress graph to show the stress distribution, and extract the maximum value from the distribution. \Cref{fig: equivalent stress} shows this graph, and the maximum stress was calculated by the software as \(\sigma_{\max} = \SI{52.06}{\MPa}\).
+
+\boxfigure[label=fig: equivalent stress, width=0.6\textwidth]{Equivalent (Von-Mises) stress distribution.}{stress}
+
+\section{Method comparison}
+The maximum stresses calculated according to analytical and numerical methods were, respectively, \SI{52.36}{\MPa} and \SI{52.06}{\MPa}. The relative error of the numerical method, then, is \SI{0.59}{\percent}. Therefore, we can conclude that the numerical results are validated and within reasonable error of the analytical result.
+
+\end{document}
