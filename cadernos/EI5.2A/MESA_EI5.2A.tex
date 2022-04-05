@@ -1,0 +1,161 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+\sisetup{
+    round-mode = figures,
+    round-precision = 5,
+    per-mode = symbol
+}
+
+\title{Exercício Individual 5.2 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+\graphicspath{{img/}}
+\begin{document}
+\frenchspacing
+\maketitle
+
+\begin{table}[h]
+    \caption{Option Variables}
+    \label{tab: option}
+    \centering
+    \begin{tabular}{cS[round-mode=none]l}
+        \toprule
+        \thead{Variable} & {\thead{Value}} & \thead{Unit} \\
+        \midrule
+        Option           & V                              \\
+        \(a\)            & 440             & \si{\mm}     \\
+        \(b\)            & 345             & \si{\mm}     \\
+        \(t\)            & 0,635           & \si{\mm}     \\
+        \(P\)            & 50              & \si{\Pa}     \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Analytical Solution}\label{sec: analytical}
+
+The deflections in a simply supported thin plate under uniform load can be calculated using \cref{eq:deflections}, where \(D = \frac{E t^3}{12(1 - \nu^2)}\) is the flexural rigidity of the plate. To find \(D\), we will take the material properties of ANSYS standard material \emph{Structural Steel}. The stresses may be calculated according to \cref{eq:stresses}, where the moments \(M_x\) and \(M_y\) are calculated using the \cref{eq:moments}. The maximum deflection and tension will occur at the center of the plate, and we can obtain numerical values for the sum by taking the first few terms. Using a python function, the sums were taken for \(m, n = 1, 3, \dots, 19 \).
+
+\begin{symsubs}[label=eq:deflections, float=htbp]{Deflections in a thin plate under uniform pressure.}
+    \begin{equation*}
+        w = \frac{1}{\pi^4 D} \sum_m \sum_n \frac{a_{mn}}{\left[
+                \left(\frac{m}{a}\right)^2 + \left(\frac{n}{b}\right)^2
+                \right]^2} \sin\frac{m \pi x}{a} \sin\frac{n \pi y}{b}
+    \end{equation*}
+    \begin{equation*}
+        a_{mn} = \frac{16 q}{\pi^2 m n}
+    \end{equation*}
+    \begin{equation*}
+        w = \frac{16 q}{\pi^6 D} \sum_m \sum_n \frac{
+            \sin\frac{m \pi x}{a} \sin\frac{n \pi y}{b}
+        }{
+            m n \left[ \left(\frac{m}{a}\right)^2 + \left(\frac{n}{b}\right)^2 \right]^2}
+    \end{equation*}
+    \tcblower\
+    \begin{align*}
+        w = \SI{0.9385809060015606}{\mm}
+    \end{align*}
+\end{symsubs}
+
+\begin{symsubs}[label=eq:moments, float=htbp]{Moments in a thin plate under uniform pressure.}
+    \begin{equation*}
+        M_x = \frac{16 q}{\pi^4 D} \sum_m \sum_n \frac{
+            \left(\frac{m}{a}\right)^2 + \nu \left(\frac{n}{b}\right)^2
+        }{
+            m n \left[ \left(\frac{m}{a}\right)^2 + \left(\frac{n}{b}\right)^2 \right]^2}
+        \sin\frac{m \pi x}{a} \sin\frac{n \pi y}{b}
+    \end{equation*}
+    \tcblower\
+    \begin{align*}
+        M_x & = \SI{0.29933721475659486}{\newton\meter} \\
+        M_y & = \SI{0.40332310673261500}{\newton\meter}
+    \end{align*}
+\end{symsubs}
+
+
+\begin{symsubs}[label=eq:stresses, float=htbp]{Stresses in a thin plate under bending moments.}
+    \begin{align*}
+        {\sigma_x}_{\max} & = \frac{E z}{1 - \nu^2} \frac{M_x}{D} \\
+        {\sigma_y}_{\max} & = \frac{E z}{1 - \nu^2} \frac{M_y}{D}
+    \end{align*}
+    \tcblower\
+    \begin{align*}
+        {\sigma_x}_{\max} & = \SI{4.454146663871460}{\MPa} \\
+        {\sigma_y}_{\max} & = \SI{6.001459831100974}{\MPa}
+    \end{align*}
+
+\end{symsubs}
+
+\section{Numerical Solution}\label{sec: numerical}
+
+Another approach for solving the problem is to use software tools to calculate the stress distribution numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\FloatBarrier
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometries. To do that, we can use the software Design Modeler. For this thin plate, we can use a surface geometry with an assigned thickness.
+
+To study how we could further reduce computational costs in a more complex, but still symmetric analysis, we can leverage the symmetries in the problem. Thus we will simulate only one quarter of the plate. This quarter plate geometry is shown in \cref{fig:geometry}
+
+\boxfigure[label=fig:geometry, width=0.6\textwidth]{Plate geometry.}{geometry}
+
+\FloatBarrier
+\subsection{Mesh Creation}
+
+The \emph{Element Size} was set to \SI{5}{\mm}. The mesh is shown in \cref{fig:mesh}
+
+\boxfigure[label=fig:mesh, width=0.6\textwidth]{Mesh.}{mesh}
+
+\FloatBarrier
+\subsection{Physical Setup}
+
+The setup for our problem includes the symmetry conditions and the uniform load. The symmetry condition is satisfied by a \emph{Displacement} and a \emph{fixed rotation} reative to the symmetry planes. The pressure load is applied on the top face. This setup is shown in \cref{fig:setup}. We also have to apply a material, and in this case we will use the software's default material, called \emph{Structural Steel}. The relevant properties of this material for this study are its Young's modulus, \(E = \SI{2e11}{\pascal}\), and Poisson's Ratio, \(\nu = \SI{0.3}{}\), the same used in \cref{sec: analytical}.
+
+\boxfigure[label=fig:setup, width=0.6\textwidth]{Setup conditions.}{loads}
+
+\FloatBarrier
+
+\subsection{Results}
+Finally, the software can solve our model, and we can calculate the desired values. We are interested in the maximum deflection and maximum normal stress. A more general result, showing (scaled) deformation and Von-Mises stress is also shown in \cref{fig:von-mises}. The maximum deflection and maximum normal stress calculated by the software are shown in \cref{tab:numerical-values}.
+
+\begin{table}[htbp]
+    \caption{Numerical Results.}
+    \label{tab:numerical-values}
+    \centering
+    \centering
+    \begin{tabular}{cSl}
+        \toprule
+        {\thead{Variable}}  & {\thead{Value}}     & {\thead{Unit}} \\
+        \midrule
+        \( w_{\max} \)      & 0.93869084119796753 & \si{\mm}       \\
+        \( \sigma_{\max} \) & 6.002990245823197   & \si{\MPa}      \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\boxfigure[label=fig:von-mises, width=0.6\textwidth]{Von-mises Stress distribution in the plate.}{von-mises}
+
+\FloatBarrier
+
+\section{Method comparison}
+
+To compare the two methods, we can calculate the relative error for each value. \Cref{tab:comparison} shows the compiled results and relative errors. All errors were smaller than \SI{0.1}{\percent}.
+
+\begin{table}[htbp]
+    \caption{Error between the numerical and analytical solutions}
+    \label{tab:comparison}
+    \centering
+    \begin{tabular}{cSSrS}
+        \toprule
+        {\thead{Variable}}  & {\thead{Numerical}} & {\thead{Analytical}} & {\thead{Unit}} & {\thead{Relative \\ Error \si{\percent}}}\\
+        \midrule
+        \( \sigma_{\max} \) & 6.002990245823197   & 6.001459831100974    & \si{\MPa}      & 0.0255007076     \\
+        \( w_{\max} \)      & 0.93869084119796753 & 0.9385809060015606   & \si{\mm}       & 0.0117129164     \\
+    \end{tabular}
+\end{table}
+
+\end{document}

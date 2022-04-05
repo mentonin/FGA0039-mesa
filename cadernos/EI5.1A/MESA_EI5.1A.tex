@@ -1,0 +1,150 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[brazilian,english]{babel}
+
+\usepackage{luiz}
+\sisetup{
+    round-mode = figures,
+    round-precision = 5,
+    per-mode = symbol
+}
+
+\title{Exercício Individual 5.1 --- Turma A}
+\author{Luiz Georg \and 15/0041390}
+\date{\today}
+
+\graphicspath{{img/}}
+\begin{document}
+\frenchspacing
+\maketitle
+
+\begin{table}[h]
+    \caption{Option Variables}
+    \label{tab: option}
+    \centering
+    \begin{tabular}{cS[round-mode=none]l}
+        \toprule
+        \thead{Variable} & {\thead{Value}} & \thead{Unit} \\
+        \midrule
+        Option           & V                              \\
+        \(R\)            & 160             & \si{\mm}     \\
+        \(h\)            & 280             & \si{\mm}     \\
+        \(t\)            & 5.5             & \si{\mm}     \\
+        \(r\)            & 10              & \si{\mm}     \\
+        \(P\)            & 6               & \si{\MPa}    \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Analytical Solution}\label{sec: analytical}
+
+Stresses in a thin walled cylindrical vessel can be calculated using \cref{eq:stresses}. To better approximate thin wall results, the average radius will be taken, that is, \(\bar{R} = \bar{R} - \frac{t}{2}\) The radial stress, from the boundary conditions, is given by the inside pressure on the inside wall and by the outside pressure on the outside wall. For this problem, the outside pressure is not specified, but the inside pressure is several orders of magnitude greater than the standard atmosphere, so we can assume that the outside pressure is zero.
+
+\begin{symsubs}[label=eq:stresses, float=htbp]{Stresses in a cylindrical pressure vase.}
+    \begin{align*}
+        \sigma_{\operatorname{hoop}} & = \frac{P\bar{R}}{t}
+        \\
+        \sigma_{\operatorname{long}} & = \frac{P\bar{R}}{2t}
+    \end{align*}
+    \tcblower\
+    \begin{align*}
+        \sigma_{\operatorname{hoop}} & = \SI{171.5454545455}{\MPa}
+        \\
+        \sigma_{\operatorname{long}} & = \SI{85.7727272727}{\MPa}
+    \end{align*}
+\end{symsubs}
+
+The hoop strain can be calculated using \cref{eq:hoop_strain}, where the material properties come into play. To compare results with the numerical method in \cref{sec: numerical}, we can take the material properties of the default material in ANSYS Mechanical. Thus, the Young's Modulus and the Poisson's Ratio used are \( E = \SI{2e5}{\MPa} \) and \( \nu = \SI{0.3}{} \).
+
+\begin{symsubs}[label=eq:hoop_strain, float=htbp]{Hoop strain in a cylindrical pressure vase.}
+    \begin{align*}
+        \epsilon_{\operatorname{hoop}} & = \frac{P\bar{R}}{Et}\left(1 - \frac{\nu}{2}\right)
+    \end{align*}
+    \tcblower\
+    \begin{align*}
+        \epsilon_{\operatorname{hoop}} & = \SI{7.2906818182e-4}{\mm\per\mm}
+    \end{align*}
+\end{symsubs}
+
+\section{Numerical Solution}\label{sec: numerical}
+
+Another approach for solving the problem is to use software tools to calculate the stress distribution numerically. Here, we can use ANSYS software to solve this problem. The process can be divided into geometry modeling, mesh creation, physical setup and results exploration.
+
+\FloatBarrier
+\subsection{Geometry Modeling}
+The first step to solve this problem lies in the creation of a model of our geometries. To do that, we can use the software Design Modeler. Although this thin walled vase could have been modelled using a surface approach for lower computational cost, we want to observe the effects of the fillet. Thus, we must create a true 3 dimensional geometry of the vase.
+
+To reduce computational costs, we can still leverage the symmetries in the problem. The cylindrical vase has a radial symmetry, which we will leverage to simulate only one quadrant, and a planar geometry across its length, which we will also use.
+
+A cylinder can be modeled as a solid of revolution, and we can take only half the revolutional section to leverage the second symmetry. This section was modeled in a sketch, shown in \cref{fig:sketch}.
+
+\boxfigure[label=fig:sketch, width=0.6\textwidth]{Revolutional section sketch.}{sketch}
+
+The 3D modeled geometries, then, consists of a quarter revolution around the cylinder axis, shown in \cref{fig:geometry}.
+
+\boxfigure[label=fig:geometry, width=0.6\textwidth]{3D geometry.}{geometry}
+
+\FloatBarrier
+\subsection{Mesh Creation}
+
+To enhance the problem mesh, a \emph{Face Meshing} condition was applied and \emph{Element Size} was set to the wall thickness. The resulting mesh is shown in \cref{fig:mesh}.
+
+\boxfigure[label=fig:mesh, width=0.6\textwidth]{Mesh colored by \emph{Element Quality}.}{mesh}
+
+\FloatBarrier
+\subsection{Physical Setup}
+
+The setup for our problem includes the symmetry conditions and the pressure load. Outside pressure will be taken as 0, as in \cref{sec: analytical}. The symmetry condition is satisfied by a \emph{Frictionless Support} on the cut faces, while the pressure load is applied on the internal faces; this setup is shown in \cref{fig:setup}, where all hidden faces are unconstrained and unloaded. We also have to apply a material, and in this case we will use the software's default material, called \emph{Structural Steel}. The relevant properties of this material for this study are its Young's modulus, \(E = \SI{2e11}{\pascal}\), and Poisson's Ratio, \(\nu = \SI{0.3}{}\), the same used in \cref{sec: analytical}.
+
+\boxfigure[label=fig:setup, width=0.6\textwidth]{Setup conditions.}{loads}
+
+\FloatBarrier
+
+\subsection{Results}
+Finally, the software can solve our model, and we can calculate the desired values. We are interested in the hoop, longitudinal, and radial stresses, as well as the hoop strain. A more general result, showing (scaled) deformation and Von-Mises stress is also shown in \cref{fig:von-mises}. The results for hoop stress, longitudinal stress, and hoop strain were averaged along the radial thickness in the middle of the vase (region shown in \cref{fig:radial-thickness}). Radial stress was taken at the inside point of the same region, since it should approach 0 in the outer surface. The values calculated by the software are shown in \cref{tab:numerical-values}.
+
+\begin{table}[h]
+    \caption{Numerical Results.}
+    \label{tab:numerical-values}
+    \centering
+    \centering
+    \begin{tabular}{cSl}
+        \toprule
+        {\thead{Variable}}                   & {\thead{Value}}     & {\thead{Unit}}  \\
+        \midrule
+        \( \sigma_{\operatorname{long}} \)   & 82.789142799377444  & \si{\MPa}       \\
+        \( \sigma_{\operatorname{hoop}} \)   & 168.60624313354492  & \si{\MPa}       \\
+        \( \sigma_{\operatorname{radial}} \) & -5.9965376853942871 & \si{\MPa}       \\
+        \( \epsilon_{\operatorname{hoop}} \) & 7.23325724538881e-4 & \si{\mm\per\mm} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\boxfigure[label=fig:von-mises, width=0.6\textwidth]{Von-mises Stress distribution in the vase.}{von-mises}
+
+\boxfigure[label=fig:radial-thickness, width=0.6\textwidth]{Region for averaging results.}{region}
+
+\FloatBarrier
+
+\section{Method comparison}
+
+To compare the two methods, we can calculate the relative error for each value. \Cref{tab:comparison} shows the compiled results and relative errors. The greatest relative error was found in the loop stress, probably caused by the bending effects around the cylinder ends. All errors were smaller than \SI{5}{\percent}.
+
+\begin{table}[htbp]
+    \caption{Error between the numerical and analytical solutions}
+    \label{tab:comparison}
+    \centering
+    \begin{tabular}{cSSrS}
+        \toprule
+        {\thead{Variable}}                   & {\thead{Numerical}} & {\thead{Analytical}} & {\thead{Unit}}  & {\thead{Relative \\ Error \si{\percent}}}\\
+        \midrule
+        \( \sigma_{\operatorname{long}} \)   & 82.789142799377444  & 85.7727272727        & \si{\MPa}       & -3.4784768634    \\
+        \( \sigma_{\operatorname{hoop}} \)   & 168.60624313354492  & 171.5454545455       & \si{\MPa}       & -1.7133717823    \\
+        \( \sigma_{\operatorname{radial}} \) & -5.9965376853942871 & -6                   & \si{\MPa}       & -0.0577052434    \\
+        \( \epsilon_{\operatorname{hoop}} \) & 7.23325724538881e-4 & 7.2906818182e-4      & \si{\mm\per\mm} & -0.7876433816    \\
+    \end{tabular}
+\end{table}
+
+\end{document}
