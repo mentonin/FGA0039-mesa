@@ -1,5 +1,0 @@
-# encoding: utf-8
-# 2021 R2
-SetScriptVersion(Version="21.2.209")
-Save(Overwrite=True)
-Open(FilePath="C:/Users/luizg/OneDrive/OneDrive_SYNC/UnB/2021.1/FGA0039-mecanica_de_estruturas_aeroespaciais/Ansys/exercicio_individual_6.wbpj")
